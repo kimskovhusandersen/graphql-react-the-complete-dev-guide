@@ -1,4 +1,4 @@
-# User Project - a GraphQL with REST API"
+# User Project - GraphQL with REST API
 
 The user-project is short demo on how to implement GraphQL with a REST API.
 
