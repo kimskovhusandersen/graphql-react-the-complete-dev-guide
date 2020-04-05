@@ -13,6 +13,22 @@ const LyricCreate = (props) => {
         songId: props.songId,
         content,
       },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        addLyricToSong: {
+          id: props.songId,
+          lyrics: [
+            ...props.lyrics,
+            {
+              id: 'somerandomid',
+              content,
+              likes: 0,
+              __typename: 'LyricType',
+            },
+          ],
+          __typename: 'SongType',
+        },
+      },
     });
     setContent('');
   };
@@ -42,6 +58,7 @@ const mutation = gql`
       lyrics {
         id
         content
+        likes
       }
     }
   }

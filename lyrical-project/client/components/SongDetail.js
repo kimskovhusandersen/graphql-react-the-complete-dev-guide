@@ -21,7 +21,7 @@ const SongDetail = (props) => {
       <Link to="/">Back</Link>
       <h3>{songDetails}</h3>
       <LyricList lyrics={lyrics} />
-      <LyricCreate songId={props.match.params.id} />
+      <LyricCreate lyrics={lyrics} songId={props.match.params.id} />
     </>
   );
 };

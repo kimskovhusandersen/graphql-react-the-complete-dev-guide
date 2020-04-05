@@ -3,20 +3,21 @@ import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { Link } from 'react-router-dom';
+import fetchSongs from '../queries/fetchSongs';
 
 const SongCreate = (props) => {
   const [title, setTitle] = useState(null);
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await props.mutate({
-      variables: {
-        title,
-      },
-    });
-    props.result.client.resetStore().then(() => props.history.push('/'));
-
-    setTitle(null);
+    await props
+      .mutate({
+        variables: {
+          title,
+        },
+        refetchQueries: [{ query: fetchSongs }],
+      })
+      .then(() => props.history.push('/'));
   };
 
   return (

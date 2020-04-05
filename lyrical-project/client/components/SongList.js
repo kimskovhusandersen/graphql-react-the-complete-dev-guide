@@ -11,7 +11,12 @@ const SongList = (props) => {
   const { data } = props;
 
   const onSongDelete = (id) => {
-    props.mutate({ variables: { id } }).then(() => props.data.refetch());
+    data.songs.pop();
+    props
+      .mutate({
+        variables: { id },
+      })
+      .then(() => props.data.refetch());
     // props.result.client.resetStore();
   };
 

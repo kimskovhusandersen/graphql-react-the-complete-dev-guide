@@ -6,3 +6,8 @@
 .material-icons {
     cursor: pointer
 }
+
+.vote-box {
+    display: flex;
+    align-items: center
+}

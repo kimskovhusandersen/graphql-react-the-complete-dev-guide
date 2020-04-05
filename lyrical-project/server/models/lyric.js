@@ -11,12 +11,12 @@ const LyricSchema = new Schema({
   content: { type: String },
 });
 
-LyricSchema.statics.like = (id) => {
+LyricSchema.statics.like = function (id) {
   const Lyric = mongoose.model('lyric');
 
   return Lyric.findById(id).then((lyric) => {
-    const updatedLyric = { ...lyric, likes: lyric.likes + 1 };
-    return updatedLyric.save();
+    ++lyric.likes;
+    return lyric.save();
   });
 };
 

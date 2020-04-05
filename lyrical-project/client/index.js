@@ -1,7 +1,7 @@
 import './style/style.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter as Router, Route } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
@@ -25,13 +25,15 @@ const client = new ApolloClient({
 const Root = () => (
   <ApolloProvider client={client}>
     <Router>
-      <Route exact path="/">
-        <App>
-          <SongList />
-        </App>
-      </Route>
-      <Route path="/songs/new" component={SongCreate} />
-      <Route path="/songs/:id" component={SongDetail} />
+      <Switch>
+        <Route exact path="/">
+          <App>
+            <SongList />
+          </App>
+        </Route>
+        <Route exact path="/songs/new" component={SongCreate} />
+        <Route path="/songs/:id" component={SongDetail} />
+      </Switch>
     </Router>
   </ApolloProvider>
 );
