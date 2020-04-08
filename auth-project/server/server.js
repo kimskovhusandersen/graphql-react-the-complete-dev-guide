@@ -1,11 +1,13 @@
 const express = require('express');
 const expressGraphQL = require('express-graphql');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
-const MongoStore = require('connect-mongo')(session);
 const webpackMiddleware = require('webpack-dev-middleware');
 const webpack = require('webpack');
+const MongoStore = require('connect-mongo')(session);
+const cookieSession = require('cookie-session');
 const models = require('./models');
 const keys = require('./config/keys');
 const schema = require('./schema/schema');
@@ -18,11 +20,16 @@ const app = express();
 // Configuration in the config folder
 const { MONGO_URI, SECRET } = keys;
 
-// Mongoose's built in promise library is deprecated, replace it with ES2015 Promise
-mongoose.Promise = global.Promise;
-
 // Connect to the mongoDB instance and log a message
 // on success or failure
+// Replace with your mongoLab URI
+
+if (!MONGO_URI) {
+  throw new Error('You must provide a MongoLab URI');
+}
+
+// Mongoose's built in promise library is deprecated, replace it with ES2015 Promise
+mongoose.Promise = global.Promise;
 mongoose.connect(MONGO_URI);
 mongoose.connection
   .once('open', () => console.log('Connected to MongoLab instance.'))
@@ -33,6 +40,14 @@ mongoose.connection
 // the cookie and modifies the request object to indicate which user made the request
 // The cookie itself only contains the id of a session; more data about the session
 // is stored inside of MongoDB.
+
+app.use(
+  cookieSession({
+    secret: SECRET,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+  }),
+);
+
 app.use(
   session({
     resave: true,
@@ -51,6 +66,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(bodyParser.json());
 // Instruct Express to pass on any request made to the '/graphql' route
 // to the GraphQL instance.
 app.use(
