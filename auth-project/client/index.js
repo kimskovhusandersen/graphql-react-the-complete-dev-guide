@@ -4,10 +4,12 @@ import ApolloClient from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
 import { ApolloProvider } from 'react-apollo';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import App from './components/App';
 import LoginForm from './components/LoginForm';
 import SignUpForm from './components/SignUpForm';
+import Dashboard from './components/Dashboard';
+import RequireAuth from './components/requireAuth';
 
 const cache = new InMemoryCache({ dataIdFromObject: (o) => o.id });
 const link = new HttpLink({
@@ -27,6 +29,7 @@ const Root = () => (
           <App />
           <Route path="/login" component={LoginForm} />
           <Route path="/signup" component={SignUpForm} />
+          <Route path="/dashboard" component={RequireAuth(Dashboard)} />
         </Route>
       </Switch>
     </Router>

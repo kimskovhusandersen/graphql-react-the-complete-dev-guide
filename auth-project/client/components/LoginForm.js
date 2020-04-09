@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { graphql } from 'react-apollo';
 import AuthForm from './AuthForm';
 import mutation from '../mutations/login';
@@ -6,6 +6,13 @@ import query from '../queries/me';
 
 const LoginForm = (props) => {
   const [errors, setErrors] = useState([]);
+
+  useEffect(() => {
+    if (props.data && props.data.me) {
+      props.history.push('/dashboard');
+    }
+  }, [props.data]);
+
   const handleSubmit = async (args) => {
     try {
       await props.mutate({
@@ -27,4 +34,4 @@ const LoginForm = (props) => {
   );
 };
 
-export default graphql(mutation)(LoginForm);
+export default graphql(mutation)(graphql(query)(LoginForm));

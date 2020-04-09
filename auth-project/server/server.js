@@ -8,12 +8,13 @@ const webpackMiddleware = require('webpack-dev-middleware');
 const webpack = require('webpack');
 const MongoStore = require('connect-mongo')(session);
 const cookieSession = require('cookie-session');
-const models = require('./models');
+require('./models');
+
 const keys = require('./config/keys');
 const schema = require('./schema/schema');
-const passportConfig = require('./services/auth');
+require('./services/auth');
 const webpackConfig = require('../webpack.config.js');
-
+const path = require('path');
 // Create a new Express application
 const app = express();
 
